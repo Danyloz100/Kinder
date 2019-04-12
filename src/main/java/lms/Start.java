@@ -21,10 +21,25 @@ public class Start extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            out.println("<html><head><title>MyServlet</title></head><body>");
-            out.write("<H1>Hello Servlet World!</H1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<!doctype html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "  <head>\n" +
+                    "    <!-- Required meta tags -->\n" +
+                    "    <meta charset=\"utf-8\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+                    "\n" +
+                    "    <!-- Bootstrap CSS -->\n" +
+                    "    <link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">\n" +
+                    "\n" +
+                    "    <title>Hello, world!</title>\n" +
+                    "  </head>\n" +
+                    "  <body>\n" +
+                    "    <h1>Hello, world!</h1>\n" +
+                    "\n" +
+                    "    <!-- Optional JavaScript -->\n" +
+                    "    <script src=\"js/bootstrap.min.js\"></script>\n" +
+                    "  </body>\n" +
+                    "</html>");
         } finally {
             out.close();
         }
