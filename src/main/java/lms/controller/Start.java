@@ -44,4 +44,10 @@ public class Start extends HttpServlet {
             out.close();
         }
     }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        String path = getServletContext().getRealPath("/html/");
+    }
 }
