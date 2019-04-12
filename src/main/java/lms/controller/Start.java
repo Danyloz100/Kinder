@@ -1,5 +1,7 @@
 package lms.controller;
 
+import lms.view.IndexSingletonView;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,5 +51,7 @@ public class Start extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         String path = getServletContext().getRealPath("/html/");
+        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
+        indexSingletonView.setPath(path);
     }
 }
