@@ -32,7 +32,7 @@ public class IndexSingletonView {
 
     private String getPartialHtml(String filename){
         StringBuilder strb = new StringBuilder();
-        Path file = Paths.get(this.path + filename);
+        Path file = Paths.get(this.path + filename + ".html");
         Charset charset = Charset.forName("UTF-8");
 
         try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
