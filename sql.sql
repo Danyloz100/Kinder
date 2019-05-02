@@ -1,4 +1,4 @@
-create table xxxkeepp.user
+create table user
 (
   ID               int auto_increment
     primary key,
@@ -11,7 +11,7 @@ create table xxxkeepp.user
     unique (email)
 );
 
-create table xxxkeepp.note
+create table note
 (
   ID               int auto_increment
     primary key,
@@ -26,10 +26,8 @@ create table xxxkeepp.note
 );
 
 
-INSERT INTO xkeepp.user (ID, email, password, Name, date_createted, Date_last_entred)
+INSERT INTO user (ID, email, password, Name, date_createted, Date_last_entred)
 VALUES (1, 'andruuu5482@gmail.com', '5482', 'Andru', '2019-04-19 16:01:39', '2019-04-19 16:01:42');
 
-INSERT INTO xkeepp.note (ID, user_id, text, title, date_created, date_last_edited)
+INSERT INTO note (ID, user_id, text, title, date_created, date_last_edited)
 VALUES (1, 1, 'Hhello ', 'Hello', '2019-04-19 16:04:41', '2019-04-19 16:04:43');
-
-select * from user;
