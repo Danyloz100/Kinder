@@ -1,6 +1,10 @@
 package lms.controller;
 
+
+import lms.dao.entity.User;
+import lms.dao.reposetory.UserRepository;
 import lms.view.IndexSingletonView;
+import lms.view.LoginView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +28,22 @@ public class Start extends HttpServlet {
         PrintWriter out = response.getWriter();
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getindexHtml());
+
+
+
+        LoginView loginView = new LoginView();
+        if (request.getParameter("email") != null &&
+                request.getParameter("password") != null) {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+
+            // test repository
+            UserRepository userRepository = new UserRepository();
+            User user = userRepository.getUserByEmailByPassword(email, password);
+            out.println(loginView.welcomUserPage(user));
+        } else {
+            out.println(loginView.getloginPage());
+        }
     }
         @Override
         public void init () throws ServletException {

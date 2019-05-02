@@ -12,6 +12,9 @@ public class IndexSingletonView {
     private String path;
     private String indexHtml;
 
+
+    private String loginForm;
+
     private static IndexSingletonView ourInstance = new IndexSingletonView();
 
     public static IndexSingletonView getInstance() {
@@ -24,7 +27,13 @@ public class IndexSingletonView {
     public void setPath(String path) {
         this.path = path;
         this.indexHtml = getPartialHtml("index");
+        this.loginForm = getPartialHtml("login");
     }
+
+    public String getLoginForm() {
+        return loginForm;
+    }
+
 
     public String getindexHtml() {
         return indexHtml;
@@ -46,4 +55,6 @@ public class IndexSingletonView {
 
         return strb.toString();
     }
+
+
 }
