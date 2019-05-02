@@ -21,10 +21,9 @@ create table note
   date_created     datetime    not null,
   date_last_edited datetime    not null,
   constraint note_user_ID_fk
-    foreign key (user_id) references xkeepp.user (ID)
+    foreign key (user_id) references user (ID)
       on update cascade on delete cascade
 );
-
 
 INSERT INTO user (ID, email, password, Name, date_createted, Date_last_entred)
 VALUES (1, 'andruuu5482@gmail.com', '5482', 'Andru', '2019-04-19 16:01:39', '2019-04-19 16:01:42');
