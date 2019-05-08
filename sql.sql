@@ -25,7 +25,7 @@ create table note
       on update cascade on delete cascade
 );
 
-INSERT INTO user (ID, email, password, Name, date_createted, Date_last_entred)
+INSERT INTO user (ID, email, password, name, date_createted, last_entred)
 VALUES (1, 'andruuu5482@gmail.com', '5482', 'Andru', '2019-04-19 16:01:39', '2019-04-19 16:01:42');
 
 INSERT INTO note (ID, user_id, text, title, date_created, date_last_edited)
