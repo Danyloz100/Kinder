@@ -8,7 +8,7 @@ public class DataSource implements AutoCloseable {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL="jdbc:mysql://localhost/xxxkeep2019?user=root&password=2810";
+    static final String DB_URL="jdbc:mysql://localhost/xxxkeep2019?user=root&password=2810&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     private Connection connection = null;
 
