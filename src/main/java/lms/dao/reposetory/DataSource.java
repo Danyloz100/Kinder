@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DataSource implements AutoCloseable {
 
     // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL="jdbc:mysql://localhost/xxxkepp?user=root&password=5482";
 
     private Connection connection = null;
