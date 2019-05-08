@@ -1,4 +1,4 @@
-package lms.view;
+package ua.ifit.lms.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +11,8 @@ public class IndexSingletonView {
 
     private String path;
     private String indexHtml;
-
-
     private String loginForm;
+    private String menu;
 
     private static IndexSingletonView ourInstance = new IndexSingletonView();
 
@@ -27,16 +26,20 @@ public class IndexSingletonView {
     public void setPath(String path) {
         this.path = path;
         this.indexHtml = getPartialHtml("index");
-        this.loginForm = getPartialHtml("login");
+        this.loginForm = getPartialHtml("login-form");
+        this.menu = getPartialHtml("menu");
+    }
+
+    public String getIndexHtml() {
+        return indexHtml;
     }
 
     public String getLoginForm() {
         return loginForm;
     }
 
-
-    public String getindexHtml() {
-        return indexHtml;
+    public String getMenu() {
+        return menu;
     }
 
     private String getPartialHtml(String filename){
@@ -55,6 +58,4 @@ public class IndexSingletonView {
 
         return strb.toString();
     }
-
-
 }

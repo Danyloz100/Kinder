@@ -1,29 +1,26 @@
-package lms.dao.entity;
+package ua.ifit.lms.dao.entity;
 
 import java.util.Objects;
-
 
 public class User {
     private long id;
     private String email;
     private String password;
-    private  String name;
-    private  String date_created;
-    private  String last_entred;
+    private String name;
+    private String date_created;
+    private String date_last_entered;
 
-    public User(long id, String email, String password, String name, String date_created, String last_entred) {
+    public User() {
+    }
+
+    public User(long id, String email, String password, String name, String date_created, String date_last_entered) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.date_created = date_created;
-        this.last_entred = last_entred;
+        this.date_last_entered = date_last_entered;
     }
-
-    public User() {
-    }
-
-
 
     public long getId() {
         return id;
@@ -65,17 +62,13 @@ public class User {
         this.date_created = date_created;
     }
 
-    public String getLast_entred() {
-        return last_entred;
+    public String getDate_last_entered() {
+        return date_last_entered;
     }
 
-    public void setLast_entred(String last_entred) {
-        this.last_entred = last_entred;
+    public void setDate_last_entered(String date_last_entered) {
+        this.date_last_entered = date_last_entered;
     }
-
-
-
-
 
     @Override
     public String toString() {
@@ -85,7 +78,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", date_created='" + date_created + '\'' +
-                ", last_entred='" + last_entred + '\'' +
+                ", date_last_entered='" + date_last_entered + '\'' +
                 '}';
     }
 
@@ -99,11 +92,11 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(name, user.name) &&
                 Objects.equals(date_created, user.date_created) &&
-                Objects.equals(last_entred, user.last_entred);
+                Objects.equals(date_last_entered, user.date_last_entered);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, date_created, last_entred);
+        return Objects.hash(id, email, password, name, date_created, date_last_entered);
     }
 }

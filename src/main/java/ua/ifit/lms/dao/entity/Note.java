@@ -1,32 +1,33 @@
-package lms.dao.entity;
+package ua.ifit.lms.dao.entity;
 
 import java.util.Objects;
 
-public class Node {
-    private  long ID;
+public class Note {
+    private long id;
     private long user_id;
-    private  String text;
+    private String text;
     private String title;
     private String date_created;
-    private String date_entred;
+    private String date_last_edited;
 
-    public Node() {
+    public Note() {
     }
-    public Node(long ID, long user_id, String text, String title, String date_created, String date_entred) {
-        this.ID = ID;
+
+    public Note(long id, long user_id, String text, String title, String date_created, String date_last_edited) {
+        this.id = id;
         this.user_id = user_id;
         this.text = text;
         this.title = title;
         this.date_created = date_created;
-        this.date_entred = date_entred;
+        this.date_last_edited = date_last_edited;
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getUser_id() {
@@ -61,23 +62,23 @@ public class Node {
         this.date_created = date_created;
     }
 
-    public String getDate_entred() {
-        return date_entred;
+    public String getDate_last_edited() {
+        return date_last_edited;
     }
 
-    public void setDate_entred(String date_entred) {
-        this.date_entred = date_entred;
+    public void setDate_last_edited(String date_last_edited) {
+        this.date_last_edited = date_last_edited;
     }
 
     @Override
     public String toString() {
-        return "Node{" +
-                "ID=" + ID +
+        return "Note{" +
+                "id=" + id +
                 ", user_id=" + user_id +
                 ", text='" + text + '\'' +
                 ", title='" + title + '\'' +
                 ", date_created='" + date_created + '\'' +
-                ", date_entred='" + date_entred + '\'' +
+                ", date_last_edited='" + date_last_edited + '\'' +
                 '}';
     }
 
@@ -85,17 +86,17 @@ public class Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Node node = (Node) o;
-        return ID == node.ID &&
-                user_id == node.user_id &&
-                Objects.equals(text, node.text) &&
-                Objects.equals(title, node.title) &&
-                Objects.equals(date_created, node.date_created) &&
-                Objects.equals(date_entred, node.date_entred);
+        Note note = (Note) o;
+        return id == note.id &&
+                user_id == note.user_id &&
+                Objects.equals(text, note.text) &&
+                Objects.equals(title, note.title) &&
+                Objects.equals(date_created, note.date_created) &&
+                Objects.equals(date_last_edited, note.date_last_edited);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, user_id, text, title, date_created, date_entred);
+        return Objects.hash(id, user_id, text, title, date_created, date_last_edited);
     }
 }

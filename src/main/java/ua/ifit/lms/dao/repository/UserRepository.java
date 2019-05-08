@@ -1,19 +1,17 @@
-package lms.dao.reposetory;
+package ua.ifit.lms.dao.repository;
 
-import lms.dao.entity.User;
-import lms.dao.reposetory.DataSource;
+import ua.ifit.lms.dao.entity.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class UserRepository {
 
     /**
      * Get User By Email and Password from User Table
+     * @return class User or null
      */
     public User getUserByEmailByPassword(String email, String password) {
 
@@ -28,7 +26,7 @@ public class UserRepository {
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-        )
+                )
         {
             if (resultSet.next())  {
                 User user =  new User(
