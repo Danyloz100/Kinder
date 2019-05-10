@@ -4,6 +4,8 @@ import ua.ifit.lms.dao.entity.Note;
 import ua.ifit.lms.dao.entity.User;
 import ua.ifit.lms.dao.repository.NoteRepository;
 import ua.ifit.lms.view.IndexSingletonView;
+import ua.ifit.lms.view.LoginView;
+import ua.ifit.lms.view.ShopView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "NoteServlet", urlPatterns = {"/notes/*"})
+@WebServlet(name = "NoteServlet", urlPatterns = {"/shop/*"})
 public class NoteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -32,15 +34,7 @@ public class NoteServlet extends HttpServlet {
         if (user == null) {
             response.sendRedirect("/");
         }
-
-        NoteRepository noteRepository = new NoteRepository();
-        List<Note> notes = noteRepository.getNotesByUserid(user.getId());
-
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        out.println(indexSingletonView.getIndexHtml()
-                .replace("<!--### insert html here ### -->", "<h1>Hello " + user.getName() + "</h1>" +
-                        notes.stream()
-                                .map(e -> "<div>" + e.getText() + "</div>")
-                                .collect(Collectors.joining(" "))));
+        ShopView shopView = new ShopView();
+        out.println(shopView.getShopPage());
     }
 }

@@ -13,6 +13,8 @@ public class IndexSingletonView {
     private String indexHtml;
     private String loginForm;
     private String menu;
+    private String shop;
+
 
     private static IndexSingletonView ourInstance = new IndexSingletonView();
 
@@ -28,6 +30,14 @@ public class IndexSingletonView {
         this.indexHtml = getPartialHtml("index");
         this.loginForm = getPartialHtml("login-form");
         this.menu = getPartialHtml("menu");
+        this.shop = getPartialHtml("shop");
+    }
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
     public String getIndexHtml() {
