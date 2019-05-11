@@ -42,7 +42,7 @@ public class StartServlet extends HttpServlet {
             // check if a user successfully logged in
             if (user != null) {
                 session.setAttribute("user", user);
-                response.sendRedirect("/shop/index");
+                response.sendRedirect("/shop");
             }
 
             out.println(loginView.getloginPage());
