@@ -16,6 +16,10 @@ public class IndexSingletonView {
     private String menu;
     private String shop;
     private String footer;
+    private String item;
+
+
+
 
 
     private static IndexSingletonView ourInstance = new IndexSingletonView();
@@ -37,10 +41,15 @@ public class IndexSingletonView {
         this.shop = getPartialHtml("shop");
         this.footer = getPartialHtml("footer");
         this.regestrationForm = getPartialHtml("regestration");
+        this.item = getPartialHtml("item");
     }
 
     public void setFooter(String footer) {
         this.footer = footer;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public void setRegestrationForm(String regestrationForm) {
@@ -73,6 +82,10 @@ public class IndexSingletonView {
 
     public String getRegestrationForm() {
         return regestrationForm;
+    }
+
+    public String getItem() {
+        return item;
     }
 
     private String getPartialHtml(String filename){

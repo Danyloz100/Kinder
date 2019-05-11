@@ -1,6 +1,5 @@
 package ua.ifit.lms.view;
 
-import ua.ifit.lms.dao.entity.User;
 
 public class RegestrationView {
 

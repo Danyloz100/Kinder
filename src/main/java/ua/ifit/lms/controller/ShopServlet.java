@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShopServlet", urlPatterns = {"/*"})
+@WebServlet(name = "ShopServlet", urlPatterns = {"/shop/*"})
 public class ShopServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,9 +27,8 @@ public class ShopServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("/");
+            response.sendRedirect("/login");
         }
-
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getMenu()
                 .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">","<a class=\"nav-link\" href=\"/\"> Logoff " + user.getName() + " <span class=\"sr-only\">"));
