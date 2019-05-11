@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShopServlet", urlPatterns = {"/shop/*"})
+@WebServlet(name = "ShopServlet", urlPatterns = {"/*"})
 public class ShopServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

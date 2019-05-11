@@ -3,6 +3,10 @@ package ua.ifit.lms.dao.repository;
 import ua.ifit.lms.dao.entity.User;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class UserRepository {
 
@@ -46,16 +50,22 @@ public class UserRepository {
     }
 
     public User setUserByEmailByPassword(String name, String email, String password) {
-
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
 
-        String query = "INSERT INTO user (`email`, `password`, `name`) VALUES ('" + email + "', '" + password + "', '" + name + "'); ";
+        String query = "INSERT INTO user (email, password, name, date_created, date_last_entered) VALUES (?,?,?,?,?); ";
+        LocalDateTime date_created = now;
+        LocalDateTime date_last_entered = now;
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(2, email);
-            pstmt.setString(3, password);
-            pstmt.setString(4, name);
+             PreparedStatement pstmt = conn.prepareStatement(query);) {
+                User user = new User();
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+            pstmt.setString(3, name);
+            pstmt.setString(4, String.valueOf(date_created));
+            pstmt.setString(5, String.valueOf(date_last_entered));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

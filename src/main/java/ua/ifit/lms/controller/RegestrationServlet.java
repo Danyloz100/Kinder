@@ -1,6 +1,5 @@
 package ua.ifit.lms.controller;
-
-import ua.ifit.lms.dao.entity.User;
+import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.dao.repository.UserRepository;
 import ua.ifit.lms.view.RegestrationView;
 
@@ -22,18 +21,19 @@ public class RegestrationServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+
         RegestrationView regestrationView = new RegestrationView();
         out.println(regestrationView.getRegestrationPage());
-        if (    request.getParameter("name") != null &&
+        if (request.getParameter("name") != null &&
                 request.getParameter("email") != null &&
                 request.getParameter("password") != null) {
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             UserRepository userRepository = new UserRepository();
-            userRepository.setUserByEmailByPassword(name,email,password);
+            userRepository.setUserByEmailByPassword(name, email, password);
+
+
         }
-
-
     }
 }
