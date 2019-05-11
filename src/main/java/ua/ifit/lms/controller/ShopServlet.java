@@ -32,7 +32,7 @@ public class ShopServlet extends HttpServlet {
 
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getMenu()
-                .replace("<li class=\"nav-item active\"> <a class=\"nav-link\" href=\"/\"> \"Login\" <span class=\"sr-only\">(current)</span> </a> </li>","<li class=\"nav-item active\"> <a class=\"nav-link\" href=\"/\">Logoff <span class=\"sr-only\">(current)</span> </a></li><li class=\"nav-item active\"> <a class=\"nav-link\" href=\"#\">Welcome" + user.getName() + "</a> </li>"));
+                .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">","<a class=\"nav-link\" href=\"/\"> Logoff " + user.getName() + " <span class=\"sr-only\">"));
         ShopView shopView = new ShopView();
         out.println(shopView.getShopPage());
     }

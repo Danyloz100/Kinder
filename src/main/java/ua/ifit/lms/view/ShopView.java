@@ -10,7 +10,7 @@ public class ShopView {
         String menu = indexSingletonView.getMenu();
         String footer = indexSingletonView.getFooter();
         return indBase
-                .replace("<!-- Menu -->", menu)
+
                 .replace("<!--### insert html here ## -->", shop)
                 .replace("<!-- Footer -->", footer);
 
