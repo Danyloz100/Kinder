@@ -47,4 +47,36 @@ public class UserRepository {
 
         return null;
     }
+    public User setUserByEmailByPassword(String name, String email, String password) {
+
+        DataSource dataSource = new DataSource();
+
+        String query = "INSERT INTO user (`id`, `email`, `password`, `name`, `date_created`, `date_last_edited`) VALUES ('"+"', '"+email+"', '"+password+"', '"+name+"', '"+"', '"+"'); ";
+
+        try (
+                // get connection with our database
+                Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+        )
+        {
+            if (resultSet.next())  {
+                User user =  new User(
+                        ("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("date_created"),
+                        resultSet.getString("date_last_entered")
+                );
+
+                return user;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
