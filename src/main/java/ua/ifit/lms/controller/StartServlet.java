@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "StartServlet", urlPatterns = {"/login"}, loadOnStartup = 1)
+@WebServlet(name = "StartServlet", urlPatterns = {"/"}, loadOnStartup = 1)
 public class StartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
