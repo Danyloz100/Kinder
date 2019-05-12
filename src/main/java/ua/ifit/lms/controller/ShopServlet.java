@@ -23,16 +23,18 @@ public class ShopServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-
+        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         User user = (User) session.getAttribute("user");
 
-        if (user == null) {
-            response.sendRedirect("/login");
+        if (user != null) {
+            out.println(indexSingletonView.getMenu()
+                    .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
+                        .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop\"> " + user.getName() + " </a>")
+            );
         }
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        out.println(indexSingletonView.getMenu()
-                .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">","<a class=\"nav-link\" href=\"/\"> Logoff " + user.getName() + " <span class=\"sr-only\">"));
-        ShopView shopView = new ShopView();
-        out.println(shopView.getShopPage());
+        else
+            out.println(indexSingletonView.getMenu());
+            ShopView shopView = new ShopView();
+            out.println(shopView.getShopPage());
     }
 }

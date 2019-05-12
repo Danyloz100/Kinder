@@ -71,6 +71,21 @@ public class UserRepository {
         return null;
     }
 
+    public boolean isUserRegisterated(String email) {
+        DataSource dataSource = new DataSource();
+        String query = "SELECT id FROM User WHERE email = \'" + email + "\';";
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next())
+                return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
     }
 
 
