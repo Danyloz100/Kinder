@@ -10,8 +10,8 @@ public class LoginView {
         String loginForm = indexSingletonView.getLoginForm();
         String menu = indexSingletonView.getMenu();
         return indBase
-                .replace("<!--### insert html here ### -->", menu)
-                .replace("<!--### insert html here ### -->", loginForm);
+                .replace("<!-- Menu -->", menu)
+                .replace("<!--### insert html here ## -->", loginForm);
     }
 
     public String welcomUserPage(User user) {

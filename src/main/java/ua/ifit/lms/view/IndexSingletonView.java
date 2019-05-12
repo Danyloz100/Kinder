@@ -12,13 +12,23 @@ public class IndexSingletonView {
     private String path;
     private String indexHtml;
     private String loginForm;
+    private String regestrationForm;
     private String menu;
+    private String shop;
+    private String footer;
+    private String item;
+
+
+
+
 
     private static IndexSingletonView ourInstance = new IndexSingletonView();
 
     public static IndexSingletonView getInstance() {
         return ourInstance;
     }
+
+
 
     private IndexSingletonView() {
     }
@@ -28,6 +38,26 @@ public class IndexSingletonView {
         this.indexHtml = getPartialHtml("index");
         this.loginForm = getPartialHtml("login-form");
         this.menu = getPartialHtml("menu");
+        this.shop = getPartialHtml("shop");
+        this.footer = getPartialHtml("footer");
+        this.regestrationForm = getPartialHtml("regestration");
+        this.item = getPartialHtml("item");
+    }
+
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
+    }
+
+    public void setRegestrationForm(String regestrationForm) {
+        this.regestrationForm = regestrationForm;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
     }
 
     public String getIndexHtml() {
@@ -40,6 +70,22 @@ public class IndexSingletonView {
 
     public String getMenu() {
         return menu;
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public String getFooter() {
+        return footer;
+    }
+
+    public String getRegestrationForm() {
+        return regestrationForm;
+    }
+
+    public String getItem() {
+        return item;
     }
 
     private String getPartialHtml(String filename){
