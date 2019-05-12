@@ -38,7 +38,7 @@ public class RegestrationServlet extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             UserRepository userRepository = new UserRepository();
-            if(!userRepository.isUserRegistrated(email)) {
+            if(!userRepository.isUserRegisterated(email)) {
                 userRepository.setUserByEmailByPassword(name, email, password);
                 response.sendRedirect("/");
             }

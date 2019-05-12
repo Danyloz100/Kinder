@@ -30,6 +30,7 @@ public class ShopServlet extends HttpServlet {
             out.println(indexSingletonView.getMenu()
                     .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/\"> Logoff " + user.getName() + " <span class=\"sr-only\">"));
         }
+        else
             out.println(indexSingletonView.getMenu());
             ShopView shopView = new ShopView();
             out.println(shopView.getShopPage());

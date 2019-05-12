@@ -73,7 +73,7 @@ public class UserRepository {
         return null;
     }
 
-    public boolean isUserRegistrated(String email) {
+    public boolean isUserRegisterated(String email) {
         DataSource dataSource = new DataSource();
         String query = "SELECT id FROM User WHERE email = \'" + email + "\';";
         try (Connection connection = dataSource.getConnection();
