@@ -46,7 +46,9 @@ public class UserRepository {
 
         return null;
     }
-
+    /**
+     * Set Email,Password,Name,Date_created,Date_last_entered from User Table
+     */
     public User setUserByEmailByPassword(String name, String email, String password) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -70,7 +72,11 @@ public class UserRepository {
         }
         return null;
     }
-
+    /**
+     * Compare if email adress is alredy registrated from db
+     *
+     * @returm true of false
+     */
     public boolean isUserRegisterated(String email) {
         DataSource dataSource = new DataSource();
         String query = "SELECT id FROM User WHERE email = \'" + email + "\';";
