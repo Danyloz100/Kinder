@@ -3,8 +3,6 @@ package ua.ifit.lms.dao.repository;
 import ua.ifit.lms.dao.entity.User;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
