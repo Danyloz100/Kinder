@@ -24,28 +24,44 @@ public class RegestrationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         RegestrationView regestrationView = new RegestrationView();
-
         if(session.getAttribute("existsEmail") != null) {
+            out.println(regestrationView.getRegestrationPage().replace("<!-- EmailExist -->", (String)session.getAttribute("existsEmail")));
             session.setAttribute("existsEmail", null);
-            out.println(regestrationView.getRegestrationPage().replace("<!-- EmailExist -->", "User with this email is already registered"));
         }
         else
-            out.println(regestrationView.getRegestrationPage());
+            if(session.getAttribute("PasswordInfo") != null) {
+                out.println(regestrationView.getRegestrationPage().replace("<!-- PasswordInfo -->", (String)session.getAttribute("PasswordInfo")));
+                session.setAttribute("PasswordInfo", null);
+            }
+            else
+                out.println(regestrationView.getRegestrationPage());
+
         if (request.getParameter("name") != null &&
                 request.getParameter("email") != null &&
-                request.getParameter("password") != null) {
+                request.getParameter("password") != null &&
+                request.getParameter("repeat-password") != null) {
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             UserRepository userRepository = new UserRepository();
             if(!userRepository.isUserRegisterated(email)) {
-                userRepository.setUserByEmailByPassword(name, email, password);
-                response.sendRedirect("/");
+                if(!password.equals(request.getParameter("repeat-password"))) {
+
+                    session.setAttribute("PasswordInfo", "<span class=\"label-input100\" style=\"color: red;\">Both passwords are not identical.</span>");
+                    response.sendRedirect("/reg");
+                }
+                else
+                {
+                    userRepository.setUserByEmailByPassword(name, email, password);
+                    response.sendRedirect("/");
+                }
             }
             else {
-                session.setAttribute("existsEmail", "exist");
+                session.setAttribute("existsEmail", "<span class=\"label-input100\" style=\"color: red;\">User with this email is already registered.</span>");
                 response.sendRedirect("/reg");
             }
+
+
         }
     }
 }
