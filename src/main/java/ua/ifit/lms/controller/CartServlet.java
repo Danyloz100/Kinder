@@ -1,8 +1,8 @@
 package ua.ifit.lms.controller;
 
 import ua.ifit.lms.dao.entity.User;
+import ua.ifit.lms.view.CartView;
 import ua.ifit.lms.view.IndexSingletonView;
-import ua.ifit.lms.view.ShopView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShopServlet", urlPatterns = {"/shop/*"})
-public class ShopServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/shop/cart"})
+public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -26,15 +26,12 @@ public class ShopServlet extends HttpServlet {
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         User user = (User) session.getAttribute("user");
 
-        if (user != null) {
             out.println(indexSingletonView.getMenu()
                     .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
-                        .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop/cart\"> " + user.getName() + " </a>")
-            );
-        }
-        else
-            out.println(indexSingletonView.getMenu());
-            ShopView shopView = new ShopView();
-            out.println(shopView.getShopPage());
+                    .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop/cart\"> " + user.getName() + " </a>"));
+        CartView cartView = new CartView();
+        out.println(cartView.getCartPage());
     }
-}
+
+    }
+

@@ -17,6 +17,7 @@ public class IndexSingletonView {
     private String shop;
     private String footer;
     private String item;
+    private String cart;
 
 
 
@@ -42,6 +43,11 @@ public class IndexSingletonView {
         this.footer = getPartialHtml("footer");
         this.regestrationForm = getPartialHtml("regestration");
         this.item = getPartialHtml("item");
+        this.cart = getPartialHtml("cart");
+    }
+
+    public void setCart(String cart) {
+        this.cart = cart;
     }
 
     public void setFooter(String footer) {
@@ -86,6 +92,10 @@ public class IndexSingletonView {
 
     public String getItem() {
         return item;
+    }
+
+    public String getCart() {
+        return cart;
     }
 
     private String getPartialHtml(String filename){
