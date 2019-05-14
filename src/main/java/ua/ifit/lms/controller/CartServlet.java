@@ -24,11 +24,17 @@ public class CartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
+
         User user = (User) session.getAttribute("user");
 
+        if (user != null) {
             out.println(indexSingletonView.getMenu()
-                    .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
-                    .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop/cart\"> " + user.getName() + " </a>"));
+                    .replace("<a class=\"nav-link\" href=\"/login\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
+                    .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/cart\"> " + user.getName() + " </a>")
+            );
+        }
+        else
+            out.println(indexSingletonView.getMenu());
         CartView cartView = new CartView();
         out.println(cartView.getCartPage());
     }
