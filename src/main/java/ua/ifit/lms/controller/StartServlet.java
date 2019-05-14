@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "StartServlet", urlPatterns = {"/"}, loadOnStartup = 1)
+@WebServlet(name = "StartServlet", urlPatterns = {"/login"})
 public class StartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,8 +26,6 @@ public class StartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
 
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        out.println(indexSingletonView.getIndexHtml());
 
         // get user credentials
          LoginView loginView = new LoginView();
@@ -63,13 +61,5 @@ public class StartServlet extends HttpServlet {
             out.println(loginView.getloginPage());
         }
 
-    }
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        String path = getServletContext().getRealPath("html/");
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        indexSingletonView.setPath(path);
     }
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShopServlet", urlPatterns = {"/shop/*"})
+@WebServlet(name = "ShopServlet", urlPatterns = {"/"}, loadOnStartup = 1)
 public class ShopServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -23,12 +23,15 @@ public class ShopServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
+        out.println(indexSingletonView.getIndexHtml());
+
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
             out.println(indexSingletonView.getMenu()
-                    .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
+                    .replace("<a class=\"nav-link\" href=\"/login\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
                         .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop/cart\"> " + user.getName() + " </a>")
             );
         }
@@ -36,5 +39,12 @@ public class ShopServlet extends HttpServlet {
             out.println(indexSingletonView.getMenu());
             ShopView shopView = new ShopView();
             out.println(shopView.getShopPage());
+    }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        String path = getServletContext().getRealPath("html/");
+        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
+        indexSingletonView.setPath(path);
     }
 }
