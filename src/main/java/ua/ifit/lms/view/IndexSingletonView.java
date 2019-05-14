@@ -19,6 +19,7 @@ public class IndexSingletonView {
     private String item;
     private String item_element;
     private String cart;
+    private String cart_item;
 
 
 
@@ -35,6 +36,14 @@ public class IndexSingletonView {
     private IndexSingletonView() {
     }
 
+    public String getCart_item() {
+        return cart_item;
+    }
+
+    public void setCart_item(String cart_item) {
+        this.cart_item = cart_item;
+    }
+
     public void setPath(String path) {
         this.path = path;
         this.indexHtml = getPartialHtml("index");
@@ -46,6 +55,7 @@ public class IndexSingletonView {
         this.item = getPartialHtml("item");
         this.item_element = getPartialHtml("item_element");
         this.cart = getPartialHtml("cart");
+        this.cart_item = getPartialHtml("cart_item");
     }
 
     public void setCart(String cart) {

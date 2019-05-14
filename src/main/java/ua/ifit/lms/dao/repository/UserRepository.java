@@ -51,8 +51,7 @@ public class UserRepository {
     /**
      * Set Email,Password,Name,Date_created,Date_last_entered from User Table
      */
-    public static User setUserByEmailByPassword(String name, String email, String password) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    public static void setUserByEmailByPassword(String name, String email, String password) {
         LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
 
@@ -72,7 +71,6 @@ public class UserRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
     }
     /**
      * Compare if email adress is alredy registrated from db
