@@ -371,6 +371,18 @@ iframe {
 
 /*------------------------------------------------------------------
 [ Button ]*/
+.btn{display:inline-block;
+    padding:5px 10px;
+    -webkit-transition:all .4s ease;
+    -o-transition:all .4s ease;
+    -moz-transition:all .4s ease;
+    transition:all .4s ease;
+    cursor:pointer;
+    font-size:15px;text-transform:uppercase;
+    font-weight:700;
+    color:#fff;
+    font-family:inherit}
+
 .container-login100-form-btn {
   width: 100%;
   display: -webkit-box;
