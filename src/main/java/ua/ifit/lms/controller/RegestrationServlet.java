@@ -39,14 +39,14 @@ public class RegestrationServlet extends HttpServlet {
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            UserRepository userRepository = new UserRepository();
-            if (!userRepository.isUserRegisterated(email)) {
+
+            if (!UserRepository.isUserRegisterated(email)) {
                 if (!password.equals(request.getParameter("repeat-password"))) {
 
                     session.setAttribute("PasswordInfo", "<span class=\"label-input100\" style=\"color: red;\">Both passwords are not identical.</span>");
                     response.sendRedirect("/reg");
                 } else {
-                    userRepository.setUserByEmailByPassword(name, email, password);
+                    UserRepository.setUserByEmailByPassword(name, email, password);
                     response.sendRedirect("/");
                 }
             } else {

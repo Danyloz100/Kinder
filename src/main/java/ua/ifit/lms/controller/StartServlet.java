@@ -35,15 +35,14 @@ public class StartServlet extends HttpServlet {
             String password = request.getParameter("password");
 
             // test repository
-            UserRepository userRepository = new UserRepository();
-            User user = userRepository.getUserByEmailByPassword(email, password);
+            User user = UserRepository.getUserByEmailByPassword(email, password);
             // check if a user successfully logged in
             if (user != null) {
                 session.setAttribute("user", user);
                 response.sendRedirect("/shop");
             }
             else {
-                if (userRepository.isUserRegisterated(email) == false) {
+                if (UserRepository.isUserRegisterated(email) == false) {
                     session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">There's no any user with this email.(Click on message)</a>");
                 } else {
                     session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">You've typed incorrect password.(Click on message)</a>");
