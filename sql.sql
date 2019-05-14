@@ -1,3 +1,4 @@
+create DATABASE shop;
 create table user
 (
   id                int auto_increment
@@ -27,8 +28,11 @@ create table note
 );
 
 
-INSERT INTO xxxkeep2019.user (id, email, password, name, date_created, date_last_entered)
+INSERT INTO shop.user (id, email, password, name, date_created, date_last_entered)
 VALUES (1, 'igor@lyutak.com', '1111', 'Igor', '2019-04-19 16:00:08', '2019-04-19 16:00:18');
 
-INSERT INTO xxxkeep2019.note (id, user_id, text, title, date_created, date_last_edited)
+INSERT INTO shop.note (id, user_id, text, title, date_created, date_last_edited)
 VALUES (1, 1, 'Test Hello World!', 'Hello', '2019-04-19 16:04:26', '2019-04-19 16:04:31');
+
+create user 'admin'@'localhost';
+Grant All PRIVILEGES ON shop.* TO 'admin'@'localhost';

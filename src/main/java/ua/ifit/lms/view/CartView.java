@@ -1,17 +1,16 @@
 package ua.ifit.lms.view;
 
-public class LoginView {
 
-    public String getloginPage() {
+public class CartView {
+
+    public String getCartPage() {
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         String indBase = indexSingletonView.getIndexHtml();
-        String loginForm = indexSingletonView.getLoginForm();
+        String cart = indexSingletonView.getCart();
         String menu = indexSingletonView.getMenu();
         String footer = indexSingletonView.getFooter();
         return indBase
-                .replace("<!-- Menu -->", menu)
-                .replace("<!--### insert html here ## -->", loginForm)
+                .replace("<!--### insert html here ## -->", cart)
                 .replace("<!-- Footer -->", footer);
     }
-
 }
