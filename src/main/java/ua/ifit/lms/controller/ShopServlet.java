@@ -1,6 +1,8 @@
 package ua.ifit.lms.controller;
 
+import ua.ifit.lms.dao.entity.Good;
 import ua.ifit.lms.dao.entity.User;
+import ua.ifit.lms.dao.repository.GoodRepository;
 import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.view.ShopView;
 
@@ -29,12 +31,19 @@ public class ShopServlet extends HttpServlet {
         if (user != null) {
             out.println(indexSingletonView.getMenu()
                     .replace("<a class=\"nav-link\" href=\"/\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
-                        .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop\"> " + user.getName() + " </a>")
+                    .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/shop\"> " + user.getName() + " </a>")
             );
-        }
-        else
+        } else
             out.println(indexSingletonView.getMenu());
-            ShopView shopView = new ShopView();
-            out.println(shopView.getShopPage());
+        ShopView shopView = new ShopView();
+        String shopPage = shopView.getShopPage();
+        for(Good each: GoodRepository.getGoods()) { // loop, which are checking all goods from database
+            shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
+                    .replace("<!-- price -->", each.getPrice().toString())
+                    .replace("<!-- name -->", each.getGood_name())
+                    .replace("<!-- picture -->", each.getPicture_file_name())
+                    .replace("<!-- description -->", each.getDescription()));
+        }
+        out.println(shopPage);
     }
 }

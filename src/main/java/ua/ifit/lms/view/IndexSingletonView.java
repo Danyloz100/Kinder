@@ -17,9 +17,7 @@ public class IndexSingletonView {
     private String shop;
     private String footer;
     private String item;
-
-
-
+    private String item_element;
 
 
     private static IndexSingletonView ourInstance = new IndexSingletonView();
@@ -27,8 +25,6 @@ public class IndexSingletonView {
     public static IndexSingletonView getInstance() {
         return ourInstance;
     }
-
-
 
     private IndexSingletonView() {
     }
@@ -42,10 +38,19 @@ public class IndexSingletonView {
         this.footer = getPartialHtml("footer");
         this.regestrationForm = getPartialHtml("regestration");
         this.item = getPartialHtml("item");
+        this.item_element = getPartialHtml("item_element");
     }
 
     public void setFooter(String footer) {
         this.footer = footer;
+    }
+
+    public String getItem_element() {
+        return item_element;
+    }
+
+    public void setItem_element(String item_element) {
+        this.item_element = item_element;
     }
 
     public void setItem(String item) {
@@ -88,7 +93,7 @@ public class IndexSingletonView {
         return item;
     }
 
-    private String getPartialHtml(String filename){
+    private String getPartialHtml(String filename) {
         StringBuilder strb = new StringBuilder();
         Path file = Paths.get(this.path + filename + ".html");
         Charset charset = Charset.forName("UTF-8");

@@ -12,7 +12,7 @@ public class DataSource implements AutoCloseable {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL="jdbc:mysql://localhost/xxxkepp?user=root&password=5482&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    static final String DB_URL="jdbc:mysql://localhost/shop?user=admin&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     private Connection connection = null;
 

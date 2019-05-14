@@ -1,6 +1,8 @@
 package ua.ifit.lms.controller;
 
+import ua.ifit.lms.dao.entity.Good;
 import ua.ifit.lms.dao.entity.User;
+import ua.ifit.lms.dao.repository.GoodRepository;
 import ua.ifit.lms.dao.repository.UserRepository;
 import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.view.LoginView;
@@ -28,9 +30,8 @@ public class StartServlet extends HttpServlet {
 
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getIndexHtml());
-
         // get user credentials
-         LoginView loginView = new LoginView();
+        LoginView loginView = new LoginView();
         if (request.getParameter("email") != null &&
                 request.getParameter("password") != null) {
             String email = request.getParameter("email");
@@ -43,8 +44,7 @@ public class StartServlet extends HttpServlet {
             if (user != null) {
                 session.setAttribute("user", user);
                 response.sendRedirect("/shop");
-            }
-            else {
+            } else {
                 if (userRepository.isUserRegisterated(email) == false) {
                     session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">There's no any user with this email.(Click on message)</a>");
                 } else {
@@ -52,15 +52,13 @@ public class StartServlet extends HttpServlet {
                 }
                 response.sendRedirect("/");
             }
-                out.println(loginView.getloginPage());
+            out.println(loginView.getloginPage());
         } else {
-            if(session.getAttribute("LoginInfo") != null)
-            {
+            if (session.getAttribute("LoginInfo") != null) {
                 out.println(loginView.getloginPage().replace("<!-- Login message -->", (String) session.getAttribute("LoginInfo")));
                 session.setAttribute("LoginInfo", null);
-            }
-            else
-            out.println(loginView.getloginPage());
+            } else
+                out.println(loginView.getloginPage());
         }
 
     }
