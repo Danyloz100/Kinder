@@ -39,5 +39,38 @@ public class GoodRepository {
         }
 
         return list;
+
+
     }
+
+     public static ArrayList<Good> getBootsByQuery(String query) {
+         DataSource dataSource = new DataSource();
+
+         ArrayList<Good> list = new ArrayList();
+
+         try (
+                 // get connection with our database
+                 Connection connection = dataSource.getConnection();
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)
+         ) {
+             while (resultSet.next()) {
+                 Good good = new Good(
+                         resultSet.getLong("idGood"),
+                         resultSet.getLong("Count_of_goods"),
+                         resultSet.getString("Good_name"),
+                         resultSet.getString("Picture_file_name"),
+                         resultSet.getFloat("Price"),
+                         resultSet.getString("Description")
+                 );
+                 list.add(good);
+             }
+
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+
+         return list;
+    }
+
 }

@@ -39,7 +39,7 @@ public class StartServlet extends HttpServlet {
             // check if a user successfully logged in
             if (user != null) {
                 session.setAttribute("user", user);
-                response.sendRedirect("/shop");
+                response.sendRedirect("/");
             }
             else {
                 if (UserRepository.isUserRegisterated(email) == false) {
@@ -47,7 +47,7 @@ public class StartServlet extends HttpServlet {
                 } else {
                     session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">You've typed incorrect password.(Click on message)</a>");
                 }
-                response.sendRedirect("/");
+                response.sendRedirect("/login");
             }
                 out.println(loginView.getloginPage());
         } else {
