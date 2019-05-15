@@ -3,10 +3,8 @@ package ua.ifit.lms.dao.repository;
 
 import ua.ifit.lms.dao.entity.User;
 
-import ua.ifit.lms.dao.repository.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class UserRepository {
 
@@ -51,8 +49,7 @@ public class UserRepository {
     /**
      * Set Email,Password,Name,Date_created,Date_last_entered from User Table
      */
-    public static User setUserByEmailByPassword(String name, String email, String password) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    public static User setnewUser(String name, String email, String password) {
         LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
 
@@ -61,8 +58,7 @@ public class UserRepository {
         LocalDateTime date_last_entered = now;
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query);) {
-                User user = new User();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             pstmt.setString(3, name);

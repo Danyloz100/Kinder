@@ -46,7 +46,7 @@ public class RegestrationServlet extends HttpServlet {
                     session.setAttribute("PasswordInfo", "<span class=\"label-input100\" style=\"color: red;\">Both passwords are not identical.</span>");
                     response.sendRedirect("/reg");
                 } else {
-                    UserRepository.setUserByEmailByPassword(name, email, password);
+                    UserRepository.setnewUser(name, email, password);
                     response.sendRedirect("/");
                 }
             } else {
