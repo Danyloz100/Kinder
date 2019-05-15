@@ -1,7 +1,9 @@
 package ua.ifit.lms.controller;
 
+import ua.ifit.lms.dao.entity.Catalog;
 import ua.ifit.lms.dao.entity.Good;
 import ua.ifit.lms.dao.entity.User;
+import ua.ifit.lms.dao.repository.CatalogRepository;
 import ua.ifit.lms.dao.repository.GoodRepository;
 import ua.ifit.lms.view.HeaderView;
 import ua.ifit.lms.view.IndexSingletonView;
@@ -26,7 +28,9 @@ public class ShopServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-
+        String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
+                " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
+                " WHERE Count_of_goods > 0";
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getIndexHtml());
 
@@ -39,18 +43,23 @@ public class ShopServlet extends HttpServlet {
             out.println(indexSingletonView.getMenu());
         ShopView shopView = new ShopView();
         String shopPage = shopView.getShopPage();
-        //Проходимося по всіх товарах
-        for(Good each: GoodRepository.getGoods()) { // loop, which are checking all goods from database
-            //Перевіряємо чи товар є у наявності, якщо є - формуємо його на сторінку магазину
-            if(each.getCount_of_goods() != 0) {
+        for(Catalog each: CatalogRepository.getCatalogs()) {
+            shopPage = shopPage.replace("<!-- element -->", indexSingletonView.getCatalog_item())
+                    .replace("<!-- name -->", each.getDescription())
+                    .replace("<!-- id -->", each.getId().toString());
+            String param_name = "check".concat(each.getId().toString());
+            if(request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) query = query.concat(" AND catalog_id = " + each.getId());
+        }
+        //Проходимося по всіх товарах. Перевіряємо чи товар є у наявності, якщо є - формуємо його на сторінку магазину
+        for(Good each: GoodRepository.getGoodsByQuery(query)){ // loop, which are checking all goods from database
                 shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
                         .replace("<!-- price -->", each.getPrice().toString())
                         .replace("<!-- name -->", each.getGood_name())
                         .replace("<!-- picture -->", each.getPicture_file_name())
                         .replace("<!-- description -->", each.getDescription())
                         .replace("<!-- address -->", request.getPathInfo().concat("item/").concat(each.getIdGood().toString())));
-            }
         }
+
         out.println(shopPage);
     }
     @Override

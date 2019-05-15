@@ -26,11 +26,10 @@ CREATE TABLE IF NOT EXISTS `Shop`.`Good` (
                                            PRIMARY KEY (`idGood`));
 
 CREATE TABLE IF NOT EXISTS `Shop`.`order` (
-                                            `ID` INT NOT NULL AUTO_INCREMENT,
-                                            `date_order` DATE NULL,
-                                            `User_ID` INT NOT NULL,
+											`User_ID` INT NOT NULL,
                                             `Good_idGood` INT NOT NULL,
-                                            PRIMARY KEY (`ID`),
+                                            PRIMARY KEY(`User_ID`, `Good_idGood`),
+                                            `date_order` DATE NULL,
                                             INDEX `fk_order_User1_idx` (`User_ID` ASC),
                                             INDEX `fk_order_Good1_idx` (`Good_idGood` ASC),
                                             CONSTRAINT `fk_order_User1`
@@ -73,8 +72,6 @@ INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (1, 1);
 INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (2, 2);
 INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (1, 'f@gmail.com', '1111', 'Nazar', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
 INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (2, 'admin@gmail.com', '1111', 'Admin', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
-INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (3, 'gay', 'porn', 'Gay porn with father', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
-
 
 create user 'admin'@'localhost';
 Grant All PRIVILEGES ON shop.* TO 'admin'@'localhost';
