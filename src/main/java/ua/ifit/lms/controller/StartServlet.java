@@ -43,9 +43,9 @@ public class StartServlet extends HttpServlet {
             }
             else {
                 if (UserRepository.isUserRegisterated(email) == false) {
-                    session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">There's no any user with this email.(Click on message)</a>");
+                    session.setAttribute("LoginInfo", "<a class=\"label-input100 text-danger\"  href=\"/reg\">There's no any user with this email.(Click on message)</a>");
                 } else {
-                    session.setAttribute("LoginInfo", "<a class=\"label-input100\" style=\"color: red;\" href=\"/reg\">You've typed incorrect password.(Click on message)</a>");
+                    session.setAttribute("LoginInfo", "<span class=\"label-input100 text-danger\"> You've typed incorrect password.</span>");
                 }
                 response.sendRedirect("/login");
             }
