@@ -39,13 +39,17 @@ public class ShopServlet extends HttpServlet {
             out.println(indexSingletonView.getMenu());
         ShopView shopView = new ShopView();
         String shopPage = shopView.getShopPage();
+        //Проходимося по всіх товарах
         for(Good each: GoodRepository.getGoods()) { // loop, which are checking all goods from database
-            shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
-                    .replace("<!-- price -->", each.getPrice().toString())
-                    .replace("<!-- name -->", each.getGood_name())
-                    .replace("<!-- picture -->", each.getPicture_file_name())
-                    .replace("<!-- description -->", each.getDescription())
-                    .replace("<!-- address -->", request.getPathInfo().concat("item/").concat(each.getIdGood().toString())));
+            //Перевіряємо чи товар є у наявності, якщо є - формуємо його на сторінку магазину
+            if(each.getCount_of_goods() != 0) {
+                shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
+                        .replace("<!-- price -->", each.getPrice().toString())
+                        .replace("<!-- name -->", each.getGood_name())
+                        .replace("<!-- picture -->", each.getPicture_file_name())
+                        .replace("<!-- description -->", each.getDescription())
+                        .replace("<!-- address -->", request.getPathInfo().concat("item/").concat(each.getIdGood().toString())));
+            }
         }
         out.println(shopPage);
     }

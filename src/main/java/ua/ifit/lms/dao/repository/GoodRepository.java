@@ -2,11 +2,9 @@ package ua.ifit.lms.dao.repository;
 
 import ua.ifit.lms.dao.entity.Good;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GoodRepository {
     static public ArrayList<Good> getGoods() {
@@ -41,7 +39,7 @@ public class GoodRepository {
         return list;
     }
 
-    public static ArrayList<Good> getGootsByQuery(String query) {
+    public static ArrayList<Good> getGoodsByQuery(String query) {
         DataSource dataSource = new DataSource();
 
         ArrayList<Good> list = new ArrayList();
@@ -131,8 +129,24 @@ public class GoodRepository {
         return null;
     }
 
+    static public void substructItems(ArrayList<Good> list) {
+        DataSource dataSource = new DataSource();
+        String query = "UPDATE `good` SET Count_of_goods = Count_of_goods - 1 WHERE idGood = ?; ";
 
 
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            for (Good each: list)
+            {
+                pstmt.setInt(1, each.getIdGood().intValue());
+                pstmt.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
 
 }

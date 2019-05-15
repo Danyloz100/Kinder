@@ -58,23 +58,20 @@ public class OrderRepository {
         }
     }
 
-    static public void substructItems(HashMap<Long,Long> map) {
+    static public void deleteOrderByGoodID(Long id) {
         DataSource dataSource = new DataSource();
-        String query = "UPDATE `good` SET Count_of_goods = Count_of_goods-? WHERE idGood = ?; ";
+        String query = "DELETE FROM `order` WHERE Good_idGood = ?; ";
 
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query);) {
-            for (HashMap.Entry<Long,Long> each: map.entrySet())
-            {
-                pstmt.setInt(1, each.getValue().intValue());
-                pstmt.setInt(2, each.getKey().intValue());
-                pstmt.executeUpdate();
-            }
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, id.intValue());
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
     }
+
 }
