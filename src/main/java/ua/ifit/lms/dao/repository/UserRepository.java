@@ -20,12 +20,12 @@ public class UserRepository {
         String query = "SELECT id, email, password, name, date_created, date_last_entered" +
                 " FROM user " +
                 " WHERE user.email='" + email + "' AND password='" + password + "'";
-
+//Pososu hui
         try (
                 // get connection with our database
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
+                ResultSet resultSet = statement.executeQuery(query)
         ) {
             if (resultSet.next()) {
                 User user = new User(
