@@ -3,6 +3,7 @@ package ua.ifit.lms.controller;
 import ua.ifit.lms.dao.entity.Good;
 import ua.ifit.lms.dao.entity.User;
 import ua.ifit.lms.dao.repository.GoodRepository;
+import ua.ifit.lms.view.HeaderView;
 import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.view.ShopView;
 
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ShopServlet", urlPatterns = {"/"}, loadOnStartup = 1)
+@WebServlet(name = "ShopServlet", urlPatterns = {"/*"}, loadOnStartup = 1)
 public class ShopServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -32,10 +33,7 @@ public class ShopServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user != null) {
-            out.println(indexSingletonView.getMenu()
-                    .replace("<a class=\"nav-link\" href=\"/login\"> Login <span class=\"sr-only\">", "<a class=\"nav-link\" href=\"/logout\"> Log out <span class=\"sr-only\">")
-                        .replace("<a class=\"nav-link\" href=\"/reg\"> SingUp </a>", "<a class=\"nav-link\" href=\"/cart\"> " + user.getName() + " </a>")
-            );
+            out.println(HeaderView.getLoggedHeader(user.getName()));
         }
         else
             out.println(indexSingletonView.getMenu());
@@ -46,7 +44,8 @@ public class ShopServlet extends HttpServlet {
                     .replace("<!-- price -->", each.getPrice().toString())
                     .replace("<!-- name -->", each.getGood_name())
                     .replace("<!-- picture -->", each.getPicture_file_name())
-                    .replace("<!-- description -->", each.getDescription()));
+                    .replace("<!-- description -->", each.getDescription())
+                    .replace("<!-- address -->", request.getPathInfo().concat("item/").concat(each.getIdGood().toString())));
         }
         out.println(shopPage);
     }

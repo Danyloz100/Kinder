@@ -49,7 +49,7 @@ public class UserRepository {
     /**
      * Set Email,Password,Name,Date_created,Date_last_entered from User Table
      */
-    public static User setnewUser(String name, String email, String password) {
+    public static void setUserByEmailByPassword(String name, String email, String password) {
         LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
 
@@ -68,7 +68,6 @@ public class UserRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
     }
     /**
      * Compare if email adress is alredy registrated from db
