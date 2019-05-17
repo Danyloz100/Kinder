@@ -30,7 +30,8 @@ public class ShopServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
                 " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
-                " WHERE Count_of_goods > 0";
+                " WHERE Count_of_goods > 0  AND(";
+        int query_length = query.length();
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
         out.println(indexSingletonView.getIndexHtml());
 
@@ -44,12 +45,15 @@ public class ShopServlet extends HttpServlet {
         ShopView shopView = new ShopView();
         String shopPage = shopView.getShopPage();
         for(Catalog each: CatalogRepository.getCatalogs()) {
+            String param_name = "check".concat(each.getId().toString());
             shopPage = shopPage.replace("<!-- element -->", indexSingletonView.getCatalog_item())
                     .replace("<!-- name -->", each.getDescription())
-                    .replace("<!-- id -->", each.getId().toString());
-            String param_name = "check".concat(each.getId().toString());
-            if(request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) query = query.concat(" AND catalog_id = " + each.getId());
+                    .replace("<!-- id -->", each.getId().toString())
+                    .replace("<!-- check -->", (request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) ? "checked" : "");
+            if(request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) query = query.concat(" catalog_id = " + each.getId() + " OR ");
         }
+        query = query.substring(0, query.length() - 4) + ((query.length() > query_length) ? ");" : ";");
+        System.out.println(query);
         //Проходимося по всіх товарах. Перевіряємо чи товар є у наявності, якщо є - формуємо його на сторінку магазину
         for(Good each: GoodRepository.getGoodsByQuery(query)){ // loop, which are checking all goods from database
                 shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
