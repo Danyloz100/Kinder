@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS `shop`;
 USE `Shop` ;
 CREATE TABLE IF NOT EXISTS `Shop`.`User` (
                                            `ID` INT NOT NULL AUTO_INCREMENT,
-                                           `Email` VARCHAR(60) NOT NULL,
+                                            `Email` VARCHAR(60) NOT NULL,
                                            `password` VARCHAR(20) NOT NULL,
                                            `Name` VARCHAR(50) NULL,
                                            `date_created` DATETIME NULL,
@@ -68,8 +68,8 @@ INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Pri
 INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description) VALUES (4, 6, 'Шапка Клівер', 'images/good4.jpg', 1500.75, 'Creep');
 INSERT INTO shop.catalog VALUES(1, 'Тип', 'Іграшка');
 INSERT INTO shop.catalog VALUES(2, 'Тип', 'Одяг');
-INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (1, 1);
-INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (2, 2);
+INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (1, 2);
+INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (2, 1);
 INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (1, 'f@gmail.com', '1111', 'Nazar', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
 INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (2, 'admin@gmail.com', '1111', 'Admin', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
 
