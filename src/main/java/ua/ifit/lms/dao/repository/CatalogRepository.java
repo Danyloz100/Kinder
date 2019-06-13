@@ -13,7 +13,7 @@ public class CatalogRepository {
 
         DataSource dataSource = new DataSource();
 
-        String query = "SELECT id, name, description" +
+        String query = "SELECT DISTINCT id, name, description" +
                 " FROM Catalog " +
                 "INNER JOIN good_has_catalog ON id = catalog_id;";
         ArrayList<Catalog> list = new ArrayList();

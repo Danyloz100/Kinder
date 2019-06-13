@@ -23,6 +23,7 @@ public class AddToCartServlet extends HttpServlet {
             OrderRepository.addOrder(user.getId(), Long.parseLong(idFromPath));
             response.sendRedirect("/cart");
         } else {
+            request.getSession().setAttribute("GoodID", request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1));
             response.sendRedirect("/login");
         }
     }
