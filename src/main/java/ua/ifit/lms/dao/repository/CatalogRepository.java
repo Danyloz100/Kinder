@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CatalogRepository {
+    // Метод повертає ліст каталогів, які відповідають хоча б 1 товару
     static public ArrayList<Catalog> getCatalogs() {
 
         DataSource dataSource = new DataSource();

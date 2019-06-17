@@ -75,3 +75,56 @@ INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entere
 
 create user 'admin'@'localhost';
 Grant All PRIVILEGES ON shop.* TO 'admin'@'localhost';
+
+CREATE TABLE ForSearchingGoods(
+		idGood INT PRIMARY KEY,
+        Count_of_goods INT,
+        Good_name VARCHAR(45),
+        Picture_file_name VARCHAR(45),
+        Price DECIMAL(6, 2),
+        `Description` VARCHAR(200),
+        Count_of_repeats INT
+	);
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FindByDescription`(UserDescription VARCHAR(45))
+    DETERMINISTIC
+BEGIN
+	DECLARE a, b VARCHAR(45);
+    DECLARE c INT;
+	DECLARE done BOOLEAN DEFAULT FALSE;
+	DECLARE Count_of_spaces INT DEFAULT 0;
+    DECLARE Iterator INT DEFAULT 0;
+    DECLARE SecondDescription VARCHAR(45) DEFAULT UserDescription;
+    DECLARE cur1 CURSOR FOR SELECT idGood,  Good_name, `Description` FROM Good;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    INSERT INTO ForSearchingGoods
+	SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Good.`Description`, 0 FROM Good;
+    SET Count_of_spaces = LENGTH(UserDescription) - LENGTH(REPLACE(UserDescription, ' ', ''));
+    OPEN cur1;
+    FETCH cur1 INTO c, a, b;
+    WHILE (done = FALSE) DO
+    SET UserDescription = SecondDescription;
+    SET Iterator = 0;
+    WHILE (Iterator != Count_of_spaces + 1) DO
+		SET Iterator = Iterator + 1;
+        IF(a LIKE CONCAT(CONCAT('%', SUBSTRING_INDEX(UserDescription, ' ', 1)), '%')) THEN
+			UPDATE ForSearchingGoods SET Count_of_repeats = Count_of_repeats + 1 WHERE idGood = c;
+        END IF;
+        IF(b LIKE CONCAT(CONCAT('%', SUBSTRING_INDEX(UserDescription, ' ', 1)), '%')) THEN
+			UPDATE ForSearchingGoods SET Count_of_repeats = Count_of_repeats + 1 WHERE idGood = c;
+        END IF;
+        SET UserDescription = SUBSTRING_INDEX(UserDescription, ' ', -1 * Count_of_spaces + Iterator - 1);
+    END WHILE;
+    FETCH cur1 INTO c, a, b;
+    END WHILE;
+    CLOSE cur1;
+    SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, `Description` FROM ForSearchingGoods
+    WHERE Count_of_repeats > 0
+    GROUP BY idGood
+    ORDER BY Count_of_repeats DESC;
+    TRUNCATE ForSearchingGoods;
+END$$
+
+
+

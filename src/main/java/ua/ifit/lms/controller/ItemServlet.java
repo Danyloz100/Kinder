@@ -4,7 +4,6 @@ import ua.ifit.lms.dao.entity.Good;
 import ua.ifit.lms.dao.entity.User;
 import ua.ifit.lms.dao.repository.GoodRepository;
 import ua.ifit.lms.view.HeaderView;
-import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.view.ItemView;
 
 import javax.servlet.ServletException;
@@ -25,19 +24,10 @@ public class ItemServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         ItemView itemView = new ItemView();
         PrintWriter out = response.getWriter();
-        User user = (User) request.getSession().getAttribute("user");
-        String idFromPath = request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1);
-        Good good = GoodRepository.getGoodByID(Long.parseLong(idFromPath));
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        if (user != null) {
-            out.println(HeaderView.getLoggedHeader(user.getName()));
-        }
-        else
-            out.println(indexSingletonView.getMenu());
-        out.println(itemView.getItemPage().replace("<!-- price -->", good.getPrice().toString())
-                .replace("<!-- name -->", good.getGood_name())
-                .replace("<!-- picture -->", "../" + good.getPicture_file_name())
-                .replace("<!-- description -->", good.getDescription())
-                .replace("<!-- ref -->", "/addtocart/" + idFromPath));
+        User user = (User) request.getSession().getAttribute("user"); // Отримуємо обєкт юзера з сесії
+        String idFromPath = request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1); // Отримуємо айді товару з адреси
+        Good good = GoodRepository.getGoodByID(Long.parseLong(idFromPath)); // Отримуємо обєкт товару за допомогою айді товару
+        out.println(HeaderView.getHeader(user)); // Формуємо хедер сторінки
+        out.println(itemView.addItem(itemView.getItemPage(), good) /* Додаємо інформацію про товар на сторінку товару */); // Передаємо браузеру сформовану сторінку товару
     }
 }

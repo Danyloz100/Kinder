@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "StartServlet", urlPatterns = {"/login"})
+@WebServlet(name = "StartServlet", urlPatterns = {"/login/*"})
 public class StartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -25,10 +25,12 @@ public class StartServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-
-
-        // get user credentials
         LoginView loginView = new LoginView();
+        String path = request.getPathInfo();
+        System.out.println(path);
+        if(path != null && path.substring(path.lastIndexOf("/") + 1).equals("logout"))
+            session.setAttribute("user", null);
+
         if (request.getParameter("email") != null &&
                 request.getParameter("password") != null) {
             String email = request.getParameter("email");
@@ -40,7 +42,7 @@ public class StartServlet extends HttpServlet {
             if (user != null) {
                 session.setAttribute("user", user);
                 if(session.getAttribute("GoodID") != null) {
-                    String address = "/addtocart/" + session.getAttribute("GoodID");
+                    String address = "/cart/addtocart/" + session.getAttribute("GoodID");
                     session.setAttribute("GoodID", null);
                     response.sendRedirect(address);
                 }

@@ -12,7 +12,7 @@ public class IndexSingletonView {
     private String path;
     private String indexHtml;
     private String loginForm;
-    private String regestrationForm;
+    private String registrationForm;
     private String menu;
     private String shop;
     private String footer;
@@ -59,7 +59,7 @@ public class IndexSingletonView {
         this.menu = getPartialHtml("menu");
         this.shop = getPartialHtml("shop");
         this.footer = getPartialHtml("footer");
-        this.regestrationForm = getPartialHtml("regestration");
+        this.registrationForm = getPartialHtml("regestration");
         this.item = getPartialHtml("item");
         this.item_element = getPartialHtml("item_element");
         this.cart = getPartialHtml("cart");
@@ -87,8 +87,8 @@ public class IndexSingletonView {
         this.item = item;
     }
 
-    public void setRegestrationForm(String regestrationForm) {
-        this.regestrationForm = regestrationForm;
+    public void setRegistrationForm(String registrationForm) {
+        this.registrationForm = registrationForm;
     }
 
     public void setShop(String shop) {
@@ -115,8 +115,8 @@ public class IndexSingletonView {
         return footer;
     }
 
-    public String getRegestrationForm() {
-        return regestrationForm;
+    public String getRegistrationForm() {
+        return registrationForm;
     }
 
     public String getItem() {

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "ShopServlet", urlPatterns = {"/*"}, loadOnStartup = 1)
 public class ShopServlet extends HttpServlet {
@@ -27,50 +29,38 @@ public class ShopServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
-                " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
-                " WHERE Count_of_goods > 0  AND(";
-        int query_length = query.length();
+        HttpSession session = request.getSession(); //Отримуємо обєкт сесії
         IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        out.println(indexSingletonView.getIndexHtml());
-
-        User user = (User) session.getAttribute("user");
-
-        if (user != null) {
-            out.println(HeaderView.getLoggedHeader(user.getName()));
-        }
-        else
-            out.println(indexSingletonView.getMenu());
         ShopView shopView = new ShopView();
         String shopPage = shopView.getShopPage();
-        for(Catalog each: CatalogRepository.getCatalogs()) {
-            String param_name = "check".concat(each.getId().toString());
-            shopPage = shopPage.replace("<!-- element -->", indexSingletonView.getCatalog_item())
-                    .replace("<!-- name -->", each.getDescription())
-                    .replace("<!-- id -->", each.getId().toString())
-                    .replace("<!-- check -->", (request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) ? "checked" : "");
-            if(request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) query = query.concat(" catalog_id = " + each.getId() + " OR ");
-        }
-        query = query.substring(0, query.length() - 4) + ((query.length() > query_length) ? ");" : ";");
-        System.out.println(query);
-        //Проходимося по всіх товарах. Перевіряємо чи товар є у наявності, якщо є - формуємо його на сторінку магазину
-        for(Good each: GoodRepository.getGoodsByQuery(query)){ // loop, which are checking all goods from database
-                shopPage = shopPage.replace("<!-- item -->", indexSingletonView.getItem_element()
-                        .replace("<!-- price -->", each.getPrice().toString())
-                        .replace("<!-- name -->", each.getGood_name())
-                        .replace("<!-- picture -->", each.getPicture_file_name())
-                        .replace("<!-- description -->", each.getDescription())
-                        .replace("<!-- address -->", request.getPathInfo().concat("item/").concat(each.getIdGood().toString())));
-        }
+        ArrayList<Catalog> checkedCategories = new ArrayList(); // Створюємо ліст для категорій, які вибрав юзер
+        User user = (User) session.getAttribute("user"); // Отримуємо обєкт юзера з атрибуту сесії
 
-        out.println(shopPage);
+        out.println(indexSingletonView.getIndexHtml());
+        out.println(HeaderView.getHeader(user)); // Формуємо хедер в залежності від того чи юзер залогінений чи ні
+
+        for(Catalog each: CatalogRepository.getCatalogs()) { // Проходимося по всіх каталогах, які відповідають хоча б 1 товару
+            String param_name = "check".concat(each.getId().toString());
+            shopPage = shopView.addCategory(shopPage, // Формуємо каталог на сторінці
+                    each,
+                    (request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) ? "checked" : ""); // Перевіряємо чи юзер вибрав даний каталог
+            if (request.getParameter(param_name) != null && request.getParameter(param_name).equals("on")) // Якщо юзер вибрав даний радіобатн - додаємо його до ліста описаного вище
+                checkedCategories.add(each);
+        }
+        String searchValue = request.getParameter("search"); // Отримує значення, яке ввів юзер в строку пошуку
+        ArrayList<Good> list = GoodRepository.getGoodsByCategories(checkedCategories); // Отримуємо ліст товарів, які відповідають каталогам, які вибрав юзер
+        for(Good each: (searchValue == null || searchValue.equals("")) ? list : GoodRepository.getGoodsByDescription(searchValue).stream().filter(c -> list.contains(c)).collect(Collectors.toList())){ // Цикл проходиться по товарах, що шукає юзер
+            shopPage = shopView.addItem(shopPage, each,
+                    request.getPathInfo().concat("item/").concat(each.getIdGood().toString())); // Додаємо(формуємо) айтем на сторінку
+        }
+        out.println((searchValue != null && !searchValue.equals("")) ? shopView.addSearchValue(shopPage, searchValue) : shopPage); // Даємо браузеру готову сторінку
     }
+
     @Override
-    public void init() throws ServletException {
-        super.init();
-        String path = getServletContext().getRealPath("html/");
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        indexSingletonView.setPath(path);
+    public void init() throws ServletException { // Виклик методу, який викликається при ініціалізації сервлета
+        super.init(); // Викликаємо метод батька HttpServlet
+        String path = getServletContext().getRealPath("html/"); //отримує шлях до папки html
+        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance(); // Оголошуємо обєкт класу IndexSingletonView.
+        indexSingletonView.setPath(path); //Передаємо шлях обєкту indexSingletonView
     }
 }

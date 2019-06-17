@@ -1,16 +1,15 @@
 package ua.ifit.lms.dao.repository;
 
+import ua.ifit.lms.dao.entity.Catalog;
 import ua.ifit.lms.dao.entity.Good;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GoodRepository {
+    // Метод повертає ліст всіх товарів
     static public ArrayList<Good> getGoods() {
-
         DataSource dataSource = new DataSource();
-
         String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description" +
                 " FROM good ";
         ArrayList<Good> list = new ArrayList();
@@ -38,12 +37,18 @@ public class GoodRepository {
 
         return list;
     }
-
-    public static ArrayList<Good> getGoodsByQuery(String query) {
+    // Метод приймає ліст каталогів та повертає ліст товарів, які відповідають цим каталогам
+    public static ArrayList<Good> getGoodsByCategories(ArrayList<Catalog> checkedCategories) {
         DataSource dataSource = new DataSource();
-
+        String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
+                " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
+                " WHERE Count_of_goods > 0  AND(";
+        int query_length = query.length();
+        for(Catalog each: checkedCategories) {
+            query = query.concat(" catalog_id = " + each.getId() + " OR ");
+        }
+        query = query.substring(0, query.length() - 4) + ((query.length() > query_length) ? ");" : ";");
         ArrayList<Good> list = new ArrayList();
-
         try (
                 // get connection with our database
                 Connection connection = dataSource.getConnection();
@@ -68,7 +73,7 @@ public class GoodRepository {
 
         return list;
     }
-
+    // Метод приймає код товару та повертає його обєкт
     public static Good getGoodByID(Long id) {
         DataSource dataSource = new DataSource();
         String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description" +
@@ -97,7 +102,7 @@ public class GoodRepository {
         }
         return null;
     }
-
+    // Метод приймає код юзера та повертає ліст всіх товарів з його корзини
     public static ArrayList<Good> getGoodsByUserID(Long id) {
         DataSource dataSource = new DataSource();
         ArrayList list = new ArrayList<Good>();
@@ -128,7 +133,7 @@ public class GoodRepository {
         }
         return null;
     }
-
+    // Приймає ліст товарів та віднімає по 1 з кількості кожного з товарів
     static public void substructItems(ArrayList<Good> list) {
         DataSource dataSource = new DataSource();
         String query = "UPDATE `good` SET Count_of_goods = Count_of_goods - 1 WHERE idGood = ?; ";
@@ -145,8 +150,31 @@ public class GoodRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
-
+    // Метод приймає опис введений користувачем та повертає ліст товарів, які йому відповідають
+    static public ArrayList<Good> getGoodsByDescription(String description) {
+        DataSource dataSource = new DataSource();
+        ArrayList<Good> list = new ArrayList();
+        String query = "CALL FindByDescription('" + description + "');";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                Good good = new Good(
+                        resultSet.getLong("idGood"),
+                        resultSet.getLong("Count_of_goods"),
+                        resultSet.getString("Good_name"),
+                        resultSet.getString("Picture_file_name"),
+                        resultSet.getFloat("Price"),
+                        resultSet.getString("Description")
+                );
+                list.add(good);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
 }

@@ -6,7 +6,6 @@ import ua.ifit.lms.dao.repository.GoodRepository;
 import ua.ifit.lms.dao.repository.OrderRepository;
 import ua.ifit.lms.view.CartView;
 import ua.ifit.lms.view.HeaderView;
-import ua.ifit.lms.view.IndexSingletonView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,50 +24,55 @@ public class CartServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Встановлення кодування ЮТФ-8
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8"); //Встановлення кодування ЮТФ-8
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(); // Отримуємо обєкт сесії
         CartView cartView = new CartView();
-        IndexSingletonView indexSingletonView = IndexSingletonView.getInstance();
-        User user = (User) session.getAttribute("user");
-        String cartPage = cartView.getCartPage();
-        //Отримуємо шлях, на якому знаходиться юзер
-        String path = request.getPathInfo();
+        User user = (User) session.getAttribute("user"); // Отримуємо обєкт юзера з сесії
+        String cartPage = cartView.getCartPage();;
+        String path = request.getPathInfo();  //Отримуємо шлях, на якому знаходиться юзер
+        String idFromPath = request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1); // Отримуємо айді товару з адреси
 
-
-                //Перевіряємо чи дані юзера є в сесії
+                //Перевіряємо чи юзер залогінився
                 if (user != null) {
-                    //Перевіряємо чи шлях = buy
+                    //Перевіряємо чи шлях = buy, якщо так то віднімаємо куплені товари з БД та видаляємо його замовлення
                     if(path != null && path.equals("/buy")) {
                         GoodRepository.substructItems(GoodRepository.getGoodsByUserID(user.getId()));
                         OrderRepository.deleteOrderByUserID(user.getId());
                     }
+                    //Перевіряємо, чи користувач перейшов на адресу додавання товару в корзину, якшо так - виконується даний блок коду
+                    if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("addtocart")) {
+
+                            OrderRepository.addOrder(user.getId(), Long.parseLong(idFromPath));
+                            response.sendRedirect("/cart");
+                    }
+                    //Якщо юзер вирішив видалити товар з корзини - спрацює цей блок коду
+                    if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("deletefromcart")) {
+                        OrderRepository.deleteOrderByUserIDByGoodID(user.getId(), Long.parseLong(idFromPath));
+                        response.sendRedirect("/cart");
+                    }
                     //Виводимо хедер залогіненого юзера
-                    out.println(HeaderView.getLoggedHeader(user.getName()));
-                    int price = 0;
+                    out.println(HeaderView.getHeader(user));
                     //Перевірка товару з корзини на наявність, якщо немає в наявності - видаляємо
                     for(Good each: GoodRepository.getGoodsByUserID(user.getId())) {
                         if(each.getCount_of_goods() == 0) OrderRepository.deleteOrderByGoodID(each.getIdGood());
                     }
-                    //Формуємо товари на веб сторінці, з даних, які знаходяться в БД
+                    Float totalPrice = 0F; //змінна, яка використовується для знаходження загальної ціни
+                    //Формуємо товари на веб сторінці, з даних, які знаходяться в БД та вираховуємо загальну ціну для товарів
                     for(Good each: GoodRepository.getGoodsByUserID(user.getId())) {
-                        cartPage = cartPage.replace("<!-- item -->", indexSingletonView.getCart_item())
-                                .replace("<!-- name -->", each.getGood_name())
-                                .replace("<!-- description -->", each.getDescription())
-                                .replace("<!-- price -->", each.getPrice().toString())
-                                .replace("<!-- picture -->", each.getPicture_file_name())
-                                .replace("<!-- address -->", "/deletefromcart/" + each.getIdGood());
-                        price += each.getPrice();
+                        cartPage = cartView.addItem(cartPage, each);
+                        totalPrice += each.getPrice();
                     }
                     //Виведення сформованої веб сторінки з загальною ціною товарів
-                    out.println(cartPage.replace("<!-- total -->", String.valueOf(price)));
+                    out.println(cartView.addTotalPrice(cartPage, totalPrice.toString()));
                 }
-                else
-                    //Якщо даних юзера немає у поточній сесії, переправляємо його на реєстрацію
-                    response.sendRedirect("/login");
-
-    }
+                else {
+                    // Якщо юзер ще не залогінився, але вирішив додати товар у корзину - запамятовуємо його вибір
+                    if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("addtocart"))
+                        session.setAttribute("GoodID", idFromPath);
+                    response.sendRedirect("/login"); //Переправляємо його на вхід
+                }
+        }
 
     }
 

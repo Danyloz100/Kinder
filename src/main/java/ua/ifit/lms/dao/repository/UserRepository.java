@@ -47,13 +47,13 @@ public class UserRepository {
         return null;
     }
     /**
-     * Set Email,Password,Name,Date_created,Date_last_entered from User Table
+     * Set Email,Password,Name,Date_created,Date_last_entered for User Table
      */
     public static void setUserByEmailByPassword(String name, String email, String password) {
         LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
 
-        String query = "INSERT INTO user (email, password, name, date_created, date_last_entered) VALUES (?,?,?,?,?); ";
+        String query = "INSERT INTO user (email, password, name, date_created, date_last_entered) VALUES (?,?,?,?,?);";
         LocalDateTime date_created = now;
         LocalDateTime date_last_entered = now;
 
@@ -70,7 +70,7 @@ public class UserRepository {
         }
     }
     /**
-     * Compare if email adress is alredy registrated from db
+     * Compare if email address is already registered from db
      *
      * @returm true of false
      */

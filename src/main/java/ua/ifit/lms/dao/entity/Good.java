@@ -1,5 +1,7 @@
 package ua.ifit.lms.dao.entity;
 
+import java.util.Objects;
+
 public class Good {
     private Long idGood;
     private Long count_of_goods;
@@ -79,4 +81,18 @@ public class Good {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Good good = (Good) o;
+        return Objects.equals(idGood, good.idGood) &&
+                Objects.equals(count_of_goods, good.count_of_goods) &&
+                Objects.equals(good_name, good.good_name) &&
+                Objects.equals(picture_file_name, good.picture_file_name) &&
+                Objects.equals(price, good.price) &&
+                Objects.equals(description, good.description);
+    }
+
 }

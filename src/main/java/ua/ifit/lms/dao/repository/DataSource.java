@@ -1,6 +1,5 @@
 package ua.ifit.lms.dao.repository;
 
-import ua.ifit.lms.dao.entity.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
