@@ -11,7 +11,7 @@ public class GoodRepository {
     // Метод приймає ліст каталогів та повертає ліст товарів, які відповідають цим каталогам
     public static ArrayList<Good> getGoodsByCategories(ArrayList<Catalog> checkedCategories) {
         DataSource dataSource = new DataSource();
-        String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
+        String query = "SELECT DISTINCT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
                 " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
                 " WHERE Count_of_goods > 0  AND(";
         int query_length = query.length();

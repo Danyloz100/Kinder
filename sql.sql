@@ -60,22 +60,6 @@ CREATE TABLE IF NOT EXISTS `Shop`.`Good_has_catalog` (
                                                            ON DELETE NO ACTION
                                                            ON UPDATE NO ACTION);
 
-
-
-INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description) VALUES (1, 4, 'Куртка Джанго', 'images/good1.jpg', 3600.30, 'This coat is beatiful');
-INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description) VALUES (2, 8, 'Динозавр Трумбо', 'images/good2.jpg', 2800.20, 'This dinosaur is just for you');
-INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description) VALUES (3, 5, 'Туфлі Джо Арвані', 'images/good3.jpg', 1200.40, 'Beatiful shoes');
-INSERT INTO shop.good (idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description) VALUES (4, 6, 'Шапка Клівер', 'images/good4.jpg', 1500.75, 'Creep');
-INSERT INTO shop.catalog VALUES(1, 'Тип', 'Іграшка');
-INSERT INTO shop.catalog VALUES(2, 'Тип', 'Одяг');
-INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (1, 2);
-INSERT INTO shop.good_has_catalog (Good_idGood, catalog_ID) VALUES (2, 1);
-INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (1, 'f@gmail.com', '1111', 'Nazar', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
-INSERT INTO shop.user (ID, Email, password, Name, date_created, date_last_entered) VALUES (2, 'admin@gmail.com', '1111', 'Admin', '2019-05-14 11:42:37', '2019-05-14 11:42:37');
-
-create user 'admin'@'localhost';
-Grant All PRIVILEGES ON shop.* TO 'admin'@'localhost';
-
 CREATE TABLE ForSearchingGoods(
 		idGood INT PRIMARY KEY,
         Count_of_goods INT,
@@ -126,5 +110,25 @@ BEGIN
     TRUNCATE ForSearchingGoods;
 END$$
 
+create user 'admin'@'localhost';
+Grant All PRIVILEGES ON shop.* TO 'admin'@'localhost';
 
+INSERT INTO `good` VALUES (1,0,'Coat Jungo','images/coat_jungo.jpg',3600.30,'This coat is beatiful'),
+(2,5,'Dinosaur Trumbo','images/goods/dinosaur_trumbo.jpg',220.20,'This dinosaur is just for you'),
+(3,5,'Shoes Joe Arvani','images/goods/shoes_joe_arvani.jpg',1200.40,'Beautiful shoes'),
+(4,5,'Cap Cliver','images/goods/cap_cliver.jpg',1500.75,'Creepy and imaginative'),
+(5,6,'Dinosaur Rex','images/goods/dinosaur_t-rex.jpg',126.30,'Looks very attractive'),
+(6,5,'Jacket NorthIsland','images/goods/jacket_northisland.jpg',2999.99,'Very expensive jacket'),
+(7,3,'McQueen racing car','images/goods/mcqueen.jpg',150.50,'Very fast and has a nitro');
+
+INSERT INTO `catalog` VALUES (1,'Тип','Іграшка'),
+(2,'Тип','Одяг'),
+(3,'Матеріал','Пластмаса'),
+(4,'Матеріал','Котон'),
+(5,'Матеріал','Еластик'),
+(6,'Тип','Взуття');
+
+INSERT INTO `good_has_catalog` VALUES (2,1),(5,1),(7,1),(1,2),(4,2),(6,2),(2,3),(5,3),(7,3),(1,4),(4,4),(6,4),(3,5),(3,6);
+
+INSERT INTO `user` VALUES (2,'admin@gmail.com','1111','Admin','2019-05-14 11:42:37','2019-05-14 11:42:37');
 

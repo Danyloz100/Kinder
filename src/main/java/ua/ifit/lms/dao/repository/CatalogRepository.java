@@ -16,7 +16,8 @@ public class CatalogRepository {
 
         String query = "SELECT DISTINCT id, name, description" +
                 " FROM Catalog " +
-                "INNER JOIN good_has_catalog ON id = catalog_id;";
+                "INNER JOIN good_has_catalog ON id = catalog_id " +
+                "ORDER BY name DESC;";
         ArrayList<Catalog> list = new ArrayList();
         try (
                 // get connection with our database

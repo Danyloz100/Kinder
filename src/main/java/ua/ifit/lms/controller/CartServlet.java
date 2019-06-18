@@ -29,26 +29,24 @@ public class CartServlet extends HttpServlet {
         HttpSession session = request.getSession(); // Отримуємо обєкт сесії
         CartView cartView = new CartView();
         User user = (User) session.getAttribute("user"); // Отримуємо обєкт юзера з сесії
-        String cartPage = cartView.getCartPage();;
+        String cartPage = cartView.getCartPage();
         String path = request.getPathInfo();  //Отримуємо шлях, на якому знаходиться юзер
-        String idFromPath = request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1); // Отримуємо айді товару з адреси
-
                 //Перевіряємо чи юзер залогінився
                 if (user != null) {
                     //Перевіряємо чи шлях = buy, якщо так то віднімаємо куплені товари з БД та видаляємо його замовлення
+
                     if(path != null && path.equals("/buy")) {
                         GoodRepository.substructItems(GoodRepository.getGoodsByUserID(user.getId()));
                         OrderRepository.deleteOrderByUserID(user.getId());
                     }
                     //Перевіряємо, чи користувач перейшов на адресу додавання товару в корзину, якшо так - виконується даний блок коду
                     if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("addtocart")) {
-
-                            OrderRepository.addOrder(user.getId(), Long.parseLong(idFromPath));
+                            OrderRepository.addOrder(user.getId(), Long.parseLong(request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1)));
                             response.sendRedirect("/cart");
                     }
                     //Якщо юзер вирішив видалити товар з корзини - спрацює цей блок коду
                     if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("deletefromcart")) {
-                        OrderRepository.deleteOrderByUserIDByGoodID(user.getId(), Long.parseLong(idFromPath));
+                        OrderRepository.deleteOrderByUserIDByGoodID(user.getId(), Long.parseLong(request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1)));
                         response.sendRedirect("/cart");
                     }
                     //Виводимо хедер залогіненого юзера
@@ -69,7 +67,7 @@ public class CartServlet extends HttpServlet {
                 else {
                     // Якщо юзер ще не залогінився, але вирішив додати товар у корзину - запамятовуємо його вибір
                     if(path != null && path.substring(0, path.lastIndexOf("/")).endsWith("addtocart"))
-                        session.setAttribute("GoodID", idFromPath);
+                        session.setAttribute("GoodID", request.getPathInfo().substring(request.getPathInfo().lastIndexOf('/') + 1));
                     response.sendRedirect("/login"); //Переправляємо його на вхід
                 }
         }
