@@ -11,7 +11,8 @@ public class LoginView {
         return indBase
                 .replace("<!-- Menu -->", menu)
                 .replace("<!--### insert html here ## -->", loginForm)
-                .replace("<!-- Footer -->", footer);
+                .replace("<!-- Footer -->", footer)
+                .replace("<footer class=\"py-5 bg-dark\">","<footer class=\"py-5 fixed-bottom bg-dark\">");
     }
 
     public String addInfo(String loginPage, String message) {
