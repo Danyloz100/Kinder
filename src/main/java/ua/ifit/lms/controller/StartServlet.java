@@ -2,7 +2,6 @@ package ua.ifit.lms.controller;
 
 import ua.ifit.lms.dao.entity.User;
 import ua.ifit.lms.dao.repository.UserRepository;
-import ua.ifit.lms.view.IndexSingletonView;
 import ua.ifit.lms.view.LoginView;
 
 import javax.servlet.ServletException;
