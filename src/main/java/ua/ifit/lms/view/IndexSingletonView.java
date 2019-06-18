@@ -59,7 +59,7 @@ public class IndexSingletonView {
         this.menu = getPartialHtml("menu");
         this.shop = getPartialHtml("shop");
         this.footer = getPartialHtml("footer");
-        this.registrationForm = getPartialHtml("regestration");
+        this.registrationForm = getPartialHtml("registration");
         this.item = getPartialHtml("item");
         this.item_element = getPartialHtml("item_element");
         this.cart = getPartialHtml("cart");

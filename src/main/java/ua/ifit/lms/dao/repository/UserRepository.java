@@ -8,11 +8,7 @@ import java.time.LocalDateTime;
 
 public class UserRepository {
 
-    /**
-     * Get User By Email and Password from User Table
-     *
-     * @return class User or null
-     */
+    // Метод, який повертає обєкт юзера, при переданні пошти та паролю
     public static User getUserByEmailByPassword(String email, String password) {
 
         DataSource dataSource = new DataSource();
@@ -20,7 +16,6 @@ public class UserRepository {
         String query = "SELECT id, email, password, name, date_created, date_last_entered" +
                 " FROM user " +
                 " WHERE user.email='" + email + "' AND password='" + password + "'";
-//Pososu hui
         try (
                 // get connection with our database
                 Connection connection = dataSource.getConnection();
@@ -36,19 +31,14 @@ public class UserRepository {
                         resultSet.getString("date_created"),
                         resultSet.getString("date_last_entered")
                 );
-
                 return user;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
-    /**
-     * Set Email,Password,Name,Date_created,Date_last_entered for User Table
-     */
+    // Встановлюємо юзера за назвою, поштою та паролем
     public static void setUserByEmailByPassword(String name, String email, String password) {
         LocalDateTime now = LocalDateTime.now();
         DataSource dataSource = new DataSource();
@@ -69,11 +59,7 @@ public class UserRepository {
             System.out.println(e.getMessage());
         }
     }
-    /**
-     * Compare if email address is already registered from db
-     *
-     * @returm true of false
-     */
+    // Метод, який повертає true, якщо юзер зареєстрований та false, якщо ні
     public static boolean isUserRegisterated(String email) {
         DataSource dataSource = new DataSource();
         String query = "SELECT id FROM User WHERE email = \'" + email + "\';";

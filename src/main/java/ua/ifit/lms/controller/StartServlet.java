@@ -22,51 +22,53 @@ public class StartServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
+        response.setContentType("text/html;charset=UTF-8"); // Встановлюємо кодування UTF-8
+        PrintWriter out = response.getWriter(); // Отримуємо посилання на обєкт для передання браузеру html сторінки
+        HttpSession session = request.getSession(); // Отримуємо посилання на обєкт сесії з обєкта запиту
         LoginView loginView = new LoginView();
-        String path = request.getPathInfo();
-        System.out.println(path);
+        String path = request.getPathInfo(); // Отримуємо шлях, на який перейшов юзер
+        String loginPage = loginView.getloginPage(); // Отримуємо сторінку входу
+        // Перевіряємо, чи юзер перейшов на сторінку виходу з акаунту
         if(path != null && path.substring(path.lastIndexOf("/") + 1).equals("logout"))
-            session.setAttribute("user", null);
-
+            session.setAttribute("user", null); // Встановлюємо значенню атрибуту сесії, який відповідає за юзера значення null
+        // Перевіряємо чи юзер ввів дані
         if (request.getParameter("email") != null &&
                 request.getParameter("password") != null) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
+            String email = request.getParameter("email"); // Отримуємо введений користувачем емайл
+            String password = request.getParameter("password"); // Отримуємо введений користувачем пароль
 
             // test repository
             User user = UserRepository.getUserByEmailByPassword(email, password);
             // check if a user successfully logged in
             if (user != null) {
+                // Записуємо юзера в атрибут сесії
                 session.setAttribute("user", user);
+                // Якщо юзер вибрав товар перед входом то додаємо останній вибраний ним товар у корзину
                 if(session.getAttribute("GoodID") != null) {
-                    String address = "/cart/addtocart/" + session.getAttribute("GoodID");
-                    session.setAttribute("GoodID", null);
-                    response.sendRedirect(address);
+                    String address = "/cart/addtocart/" + session.getAttribute("GoodID"); // Створюємо адресу додавання товару у корзину
+                    session.setAttribute("GoodID", null); // Встановлюємо коду продукту значення null, щоб знати, що товар доданий до корзини
+                    response.sendRedirect(address); // Направляємо юзера на сторінку додавання товару у корзину
                 }
                 else
-                response.sendRedirect("/");
+                response.sendRedirect("/"); // Якщо ж юзер не мав вибраного товару до входу, направляємо його на сторінку магазину
             }
             else {
+                // Перевіряємо чи юзер не зареєстрований
                 if (!UserRepository.isUserRegisterated(email)) {
-                    session.setAttribute("LoginInfo", "<a class=\"label-input100 text-danger\"  href=\"/reg\">There's no any user with this email.(Click on message)</a>");
+                    session.setAttribute("LoginInfo", "There's no any user with this email."); // Записуємо повідомлення у атрибут сесії, що юзер не зареєстрований
                 } else {
-                    session.setAttribute("LoginInfo", "<span class=\"label-input100 text-danger\"> You've typed incorrect password.</span>");
+                    session.setAttribute("LoginInfo", "You've typed incorrect password."); // Якщо ж юзер зареєстрований, значить пароль не вірний - записуємо відповідне повідомлення у атрибут сесії
                 }
-                response.sendRedirect("/login");
+                response.sendRedirect("/login"); // Направляємо юзера на сторінку входу
             }
-                out.println(loginView.getloginPage());
         } else {
+            // Перевіряємо чи є якась інформація про невдалий вхід
             if(session.getAttribute("LoginInfo") != null)
             {
-                out.println(loginView.getloginPage().replace("<!-- Login message -->", (String) session.getAttribute("LoginInfo")));
-                session.setAttribute("LoginInfo", null);
+                loginPage = loginView.addInfo(loginPage, (String) session.getAttribute("LoginInfo")); // Додаємо попередньо згенероване повідомлення до сторінки входу
+                session.setAttribute("LoginInfo", null); // Встановлюємо атрибуту сесії, який відповідає за повідомлення хибного входу значення null
             }
-            else
-            out.println(loginView.getloginPage());
         }
-
+        out.println(loginPage); // Передаємо сторінку входу браузеру
     }
 }

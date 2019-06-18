@@ -14,4 +14,7 @@ public class LoginView {
                 .replace("<!-- Footer -->", footer);
     }
 
+    public String addInfo(String loginPage, String message) {
+        return loginPage.replace("<!-- info -->", "<span class=\"label-input100 text-danger\">" + message + "</span>");
+    }
 }
