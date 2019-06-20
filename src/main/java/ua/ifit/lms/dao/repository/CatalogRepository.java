@@ -13,7 +13,6 @@ public class CatalogRepository {
     static public ArrayList<Catalog> getCatalogs() {
 
         DataSource dataSource = new DataSource();
-
         String query = "SELECT DISTINCT id, name, description" +
                 " FROM Catalog " +
                 "INNER JOIN good_has_catalog ON id = catalog_id " +
@@ -32,6 +31,29 @@ public class CatalogRepository {
                         resultSet.getString("description")
                 );
                 list.add(catalog);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    // Метод повертає ліст всіх існуючих типів каталогів
+    static public ArrayList<String> getCatalogsTypes() {
+        DataSource dataSource = new DataSource();
+        String query = "SELECT DISTINCT name" +
+                " FROM Catalog ";
+        ArrayList<String> list = new ArrayList();
+        try (
+                // get connection with our database
+                Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)
+        ) {
+            while (resultSet.next()) {
+                list.add(resultSet.getString("name"));
             }
 
         } catch (SQLException e) {

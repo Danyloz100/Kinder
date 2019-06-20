@@ -38,8 +38,11 @@ public class ShopServlet extends HttpServlet {
 
         out.println(indexSingletonView.getIndexHtml());
         out.println(HeaderView.getHeader(user)); // Формуємо хедер в залежності від того чи юзер залогінений чи ні
-
-        for(Catalog each: CatalogRepository.getCatalogs()) { // Проходимося по всіх каталогах, які відповідають хоча б 1 товару
+        ArrayList<Catalog> catalogList = CatalogRepository.getCatalogs();
+        for(int i = 0; i < catalogList.size(); i++) { // Проходимося по всіх каталогах, які відповідають хоча б 1 товару
+            Catalog each = catalogList.get(i);
+            if((i>0 && !each.getName().equals(catalogList.get(i-1).getName())) || i == 0)
+                shopPage = shopView.addGroupNameForCatalogs(shopPage, each.getName());
             String param_name = "check".concat(each.getId().toString());
             shopPage = shopView.addCategory(shopPage, // Формуємо каталог на сторінці
                     each,

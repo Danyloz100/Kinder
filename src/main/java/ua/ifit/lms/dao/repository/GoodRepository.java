@@ -11,14 +11,22 @@ public class GoodRepository {
     // Метод приймає ліст каталогів та повертає ліст товарів, які відповідають цим каталогам
     public static ArrayList<Good> getGoodsByCategories(ArrayList<Catalog> checkedCategories) {
         DataSource dataSource = new DataSource();
-        String query = "SELECT DISTINCT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
+        String query = "SELECT idGood, Count_of_goods, Good_name, Picture_file_name, Price, Description FROM Good" +
                 " LEFT JOIN good_has_catalog ON idGood = good_idGood" +
-                " WHERE Count_of_goods > 0  AND(";
-        int query_length = query.length();
-        for(Catalog each: checkedCategories) {
-            query = query.concat(" catalog_id = " + each.getId() + " OR ");
+                " WHERE Count_of_goods > 0  AND ( 1 = 1 /*type*/)" +
+                " GROUP BY Good_idGood;";
+        for(String each: CatalogRepository.getCatalogsTypes()) {
+            query = query.replace("/*type*/", "AND ( /*" + each + "*/ ) /*type*/");
         }
-        query = query.substring(0, query.length() - 4) + ((query.length() > query_length) ? ");" : ";");
+        query = query.replace("/*type*/", "");
+
+        for(Catalog each: checkedCategories) {
+            query = query.replace("/*" + each.getName() + "*/", each.getId() + " = ANY( SELECT catalog_id FROM good_has_catalog a WHERE a.good_idgood = good_has_catalog.good_idGood)" + " OR " + "/*" + each.getName() + "*/");
+        }
+        for(String each: CatalogRepository.getCatalogsTypes()) {
+            query = query.replace(" OR /*" + each + "*/", "");
+            query = query.replace(" AND ( /*" + each + "*/ )", "");
+        }
         ArrayList<Good> list = new ArrayList();
         try (
                 // get connection with our database

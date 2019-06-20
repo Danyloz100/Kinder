@@ -38,4 +38,9 @@ public class ShopView {
         return shopPage
                 .replace("><!-- value -->", "value=\"" + value + "\">");
     }
+
+    public String addGroupNameForCatalogs(String shopPage, String catalogType) {
+        return shopPage
+                .replace("<!-- element -->", "<div style=\"text-align: center; padding: 5px 0; background-color: white;\">" + catalogType + "</div>\n <!-- element -->");
+    }
 }
