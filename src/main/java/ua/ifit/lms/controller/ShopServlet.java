@@ -20,6 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+
+/**
+ * Основна сторінка магазину
+*/
 @WebServlet(name = "ShopServlet", urlPatterns = {"/*"}, loadOnStartup = 1)
 public class ShopServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

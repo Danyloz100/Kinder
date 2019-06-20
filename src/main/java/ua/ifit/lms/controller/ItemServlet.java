@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Сторінка товару
+ */
+
 @WebServlet(name = "ItemServlet", urlPatterns = {"/item/*"}, loadOnStartup = 1)
 public class ItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

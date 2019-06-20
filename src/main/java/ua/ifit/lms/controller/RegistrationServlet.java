@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Сторінка товару
+ */
+
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/reg"})
 public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
